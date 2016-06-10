@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+  <!--
+  | All Appenders (NOTE: this is mainly for local development)
+  -->
+  <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+    <param name="Target" value="System.out"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{ISO8601} %-4r [%t] %-5p %c %x - %m%n"/>
+    </layout>
+  </appender>
+
+  <appender name="STDERR" class="org.apache.log4j.ConsoleAppender">
+    <param name="Target" value="System.err"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{ISO8601} %-4r [%t] %-5p %c %x - %m%n"/>
+    </layout>
+  </appender>
+
+  <!--
+  | All loggers (All additional ones go here)
+  -->
+
+  <!-- Default Spring Framework is WARN -->
+  <logger name="org.springframework" additivity="false">
+    <level value="WARN"/>
+    <appender-ref ref="STDOUT"/>
+  </logger>
+  <logger name="com.uprr" additivity="false">
+    <level value="INFO"/>
+    <appender-ref ref="STDOUT"/>
+  </logger>
+
+  <!--
+  | The root Logger
+  -->
+  <root>
+    <priority value="INFO"/>
+    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="STDERR"/>
+  </root>
+
+</log4j:configuration>

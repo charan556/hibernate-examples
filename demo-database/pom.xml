@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>charan.demo.database</groupId>
+	<artifactId>hibernate-demo-database</artifactId>
+	<version>1.0.0</version>
+
+	<packaging>jar</packaging>
+
+	<name>DEMO :: DATABASE:: local hsql DB</name>
+	<description><![CDATA[A Sample Standalone database.]]></description>
+	<dependencies>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.3.1</version>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>org.hsqldb.server.Server</mainClass>
+					<arguments>
+						<argument>--database.0</argument>
+						<argument>file:demo-database/hsqldb</argument>
+					</arguments>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<!-- This profile will run the database -->
+
+		<!-- This profile will run the scripts for database -->
+		<profile>
+			<id>create-db</id>
+			<build>
+				<plugins>
+					<!-- Maven Database plugin -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>sql-maven-plugin</artifactId>
+						<version>1.5</version>
+						<dependencies>
+							<dependency>
+								<groupId>org.hsqldb</groupId>
+								<artifactId>hsqldb</artifactId>
+								<version>2.3.1</version>
+								<scope>runtime</scope>
+							</dependency>
+						</dependencies>
+						<executions>
+							<execution>
+								<id>create-db</id>
+								<phase>process-test-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<driver>org.hsqldb.jdbcDriver</driver>
+									<url>jdbc:hsqldb:hsql://localhost</url>
+									<username>SA</username>
+									<password></password>
+									<autocommit>true</autocommit>
+									<srcFiles>
+										<srcFile>src/main/resources/demo-db.sql</srcFile>
+									</srcFiles>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>
+
